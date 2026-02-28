@@ -9,21 +9,26 @@ const ROBLOX_IMG =
 const ONE_BLOCK_IMG =
   "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/a9/90/b1/a990b146-f9cb-7136-dc81-fd70e7ea2dbe/36304c14-13d7-47d4-b016-6f3d3deb52d1_one-block-maps-minecraft-mcpe-screen2.jpg/626x290bb.webp";
 
-const SECURLY_BYPASS_TEXT = `CLOSET.GG 2026
-Go to the Network section in settings.
-Click the Haworth wifi.
-Scroll down until you see "Network."
-Click on the dropdown menu, click custom name servers, and fill in the following numbers.
+const LOCKWARE_LOGO =
+  "https://lh3.google.com/u/0/d/1_gIeA5k4L0YXBWKJSJ1T4wLwaoUdmKsn=w1776-h1370-iv1?auditContext=prefetch";
+
+const SECURLY_BYPASS_TEXT = `Method 1: lockware ONC v4.1.1 (Private method so it's safer and faster)
+1. Go to the settings of the WiFi you're connected to.
+2. Scroll down until you see "Network." Click on the dropdown menu and click custom name servers.
+3. Fill in the following numbers in the respected order:
 66.23.198.252
 66.94.105.229
 167.86.91.171
 0.0.0.0
-Exit out of settings.
-May take up to 15 minutes to fully disable Securly.`;
+4. Exit out of settings and wait 5-10 minutes for Securly to be killed.
 
-const ONE_BLOCK_INSTRUCTIONS = `CLOSET.GG 2026
+Method 2: KSF Secure DNS (Public and slower, but more stable)
+1. Open the Settings app.
+2. Go to Security and Privacy.
+3. Enable Use secure DNS.
+4. Select With: Custom, then enter https://dns.nextdns.io/a4ea85.`;
 
-1. Downloading a launcher
+const ONE_BLOCK_INSTRUCTIONS = `1. Downloading a launcher
 
 FOR MACOS
 Download this file: https://drive.google.com/uc?export=download&id=1_YJEI55TpoPyLtz-W122u4j7mZ2v99nt
@@ -31,8 +36,9 @@ Unzip the file and open the .html inside.
 Scroll down and continue to the second section.
 
 FOR CHROMEOS
-Use the closet.gg Securly Bypass feature.
+Use the latest supported version of SecurlyONC.
 Open WebMC Launcher and launch 1.12.2.
+Scroll down and continue to the second section.
 
 2. Joining the server
 Pick a unique username, go to multiplayer, and press direct connect.
@@ -256,25 +262,108 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
   );
 }
 
+function openTextPage(content: string) {
+  const newWin = window.open("", "_blank");
+  if (!newWin) return;
+  const escaped = content
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  newWin.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lockware™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0a;
+      color: #ffffff;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+    header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .header-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.025em;
+      color: #F0F0F0;
+    }
+    .header-badge {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      padding: 2px 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 1px;
+      background: rgba(0,0,0,0.55);
+      color: #ffffff;
+    }
+    .content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 60px 24px 60px;
+      text-align: center;
+    }
+    .text-body {
+      white-space: pre-wrap;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #ffffff;
+      font-family: 'DM Sans', sans-serif;
+      text-align: left;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <img src="${LOCKWARE_LOGO}" alt="lockware logo" class="header-logo" />
+      <span class="header-title">lockware™</span>
+      <span class="header-badge">BETA</span>
+    </div>
+  </header>
+  <div class="content">
+    <span class="text-body">${escaped}</span>
+  </div>
+</body>
+</html>`);
+  newWin.document.close();
+}
+
 export default function App() {
   const handleSecurlyDownload = () => {
-    const blob = new Blob([SECURLY_BYPASS_TEXT], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "securlyonc-4.1.txt";
-    a.click();
-    URL.revokeObjectURL(url);
+    openTextPage(SECURLY_BYPASS_TEXT);
   };
 
   const handleOneBlockDownload = () => {
-    const blob = new Blob([ONE_BLOCK_INSTRUCTIONS], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "one-block-instructions.txt";
-    a.click();
-    URL.revokeObjectURL(url);
+    openTextPage(ONE_BLOCK_INSTRUCTIONS);
   };
 
   // Row 1: Minecraft, ChromeOS, One Block World (3 cols)
@@ -317,6 +406,16 @@ export default function App() {
 
   const row2Products: Product[] = [
     {
+      id: 4,
+      category: "ROBLOX",
+      title: "Roblox Reworked Emulator",
+      description: "A closed test for Roblox emulating on school devices.",
+      image: ROBLOX_IMG,
+      buttonLabel: "Paid Users Only",
+      buttonAction: () => {},
+      isComingSoon: true,
+    },
+    {
       id: 5,
       category: "GLOBAL",
       title: "Fortinet Bypass",
@@ -328,16 +427,6 @@ export default function App() {
       buttonAction: () => {},
       isComingSoon: true,
       imageObjectPosition: "top",
-    },
-    {
-      id: 4,
-      category: "ROBLOX",
-      title: "Roblox Reworked Emulator",
-      description: "A closed test for Roblox emulating on school devices.",
-      image: ROBLOX_IMG,
-      buttonLabel: "Coming Soon",
-      buttonAction: () => {},
-      isComingSoon: true,
     },
   ];
 
