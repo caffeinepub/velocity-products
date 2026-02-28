@@ -55,9 +55,10 @@ interface Product {
 
 interface CardProps {
   product: Product;
+  thumbnailHeight?: number;
 }
 
-function ProductCard({ product }: CardProps) {
+function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
@@ -66,6 +67,7 @@ function ProductCard({ product }: CardProps) {
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
     if (!card) return;
+    // Use the stable outer wrapper's bounds, not the tilted article's bounds
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -87,12 +89,15 @@ function ProductCard({ product }: CardProps) {
   }, []);
 
   return (
-    <div style={{ perspective: "1000px" }} className="w-full h-full">
+    <div
+      ref={cardRef}
+      style={{ perspective: "1000px" }}
+      className="w-full h-full"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+    >
       <article
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        onMouseEnter={handleMouseEnter}
         style={{
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
           transition: isHovered
@@ -118,7 +123,10 @@ function ProductCard({ product }: CardProps) {
         {/* Thumbnail with category badge overlay */}
         <div
           className="w-full overflow-hidden relative"
-          style={{ borderRadius: "8px 8px 0 0", height: "180px" }}
+          style={{
+            borderRadius: "8px 8px 0 0",
+            height: `${thumbnailHeight}px`,
+          }}
         >
           <img
             src={product.image}
@@ -261,9 +269,9 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
-  // Row 1: Minecraft, ChromeOS
-  // Row 2: Roblox, One Block World
-  const products: Product[] = [
+  // Row 1: Minecraft, ChromeOS, One Block World (3 cols)
+  // Row 2: Fortinet Bypass, Roblox (2 cols)
+  const row1Products: Product[] = [
     {
       id: 1,
       category: "MINECRAFT",
@@ -296,6 +304,21 @@ export default function App() {
       buttonLabel: "Download",
       buttonAction: handleOneBlockDownload,
       useDownloadIcon: true,
+    },
+  ];
+
+  const row2Products: Product[] = [
+    {
+      id: 5,
+      category: "GLOBAL",
+      title: "Fortinet Bypass",
+      description:
+        "A currently work-in-progress solution to Fortinet wifi address blocks.",
+      image:
+        "https://us1.discourse-cdn.com/spiceworks/original/4X/d/e/b/deb31d028745f35dcf540fc1cc95047c40b66eb3.png",
+      buttonLabel: "Coming Soon",
+      buttonAction: () => {},
+      isComingSoon: true,
     },
     {
       id: 4,
@@ -479,9 +502,24 @@ export default function App() {
           Features
         </h2>
 
-        <div className="grid grid-cols-2 gap-6 items-stretch">
-          {products.map((product) => (
+        {/* Row 1: 3 columns */}
+        <div className="grid grid-cols-3 gap-6 items-stretch mb-6">
+          {row1Products.map((product) => (
             <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+
+        {/* Row 2: 2 columns */}
+        <div
+          className="grid grid-cols-2 gap-6 items-stretch"
+          style={{ minHeight: "520px" }}
+        >
+          {row2Products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              thumbnailHeight={260}
+            />
           ))}
         </div>
       </main>
