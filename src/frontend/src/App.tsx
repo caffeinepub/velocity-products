@@ -51,6 +51,7 @@ interface Product {
   buttonAction: () => void;
   isComingSoon?: boolean;
   useDownloadIcon?: boolean;
+  imageObjectPosition?: string;
 }
 
 interface CardProps {
@@ -79,6 +80,8 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
     setGlowPos({ x: (x / rect.width) * 100, y: (y / rect.height) * 100 });
   }, []);
 
+  // cursor style: pointer only over interactive elements, default over the rest
+
   const handleMouseLeave = useCallback(() => {
     setTilt({ x: 0, y: 0 });
     setIsHovered(false);
@@ -91,7 +94,7 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
   return (
     <div
       ref={cardRef}
-      style={{ perspective: "1000px" }}
+      style={{ perspective: "1000px", cursor: "default" }}
       className="w-full h-full"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -101,20 +104,21 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
         style={{
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
           transition: isHovered
-            ? "transform 0.05s ease-out"
-            : "transform 0.4s ease-out",
+            ? "transform 0.15s ease-out"
+            : "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
           transformStyle: "preserve-3d",
           willChange: "transform",
-          borderRadius: "8px",
+          borderRadius: "4px",
+          cursor: "default",
         }}
-        className="relative bg-[#111111] border border-white/10 cursor-pointer h-full flex flex-col"
+        className="relative bg-[#111111] border border-white/10 h-full flex flex-col"
       >
         {/* Glow overlay — only visible on hover */}
         {isHovered && (
           <div
             className="absolute inset-0 pointer-events-none z-10"
             style={{
-              borderRadius: "8px",
+              borderRadius: "4px",
               background: `radial-gradient(circle at ${glowPos.x}% ${glowPos.y}%, rgba(255,255,255,0.07) 0%, transparent 65%)`,
             }}
           />
@@ -124,7 +128,7 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
         <div
           className="w-full overflow-hidden relative"
           style={{
-            borderRadius: "8px 8px 0 0",
+            borderRadius: "4px 4px 0 0",
             height: `${thumbnailHeight}px`,
           }}
         >
@@ -132,14 +136,17 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
             src={product.image}
             alt={product.title}
             className="w-full h-full object-cover"
-            style={{ display: "block" }}
+            style={{
+              display: "block",
+              objectPosition: product.imageObjectPosition ?? "center",
+            }}
           />
           {/* Category badge — top-left over image, turns white when panel is hovered */}
           <span
             className="absolute top-2 left-2 text-[10px] tracking-widest font-semibold px-2 py-0.5 border border-white/20 transition-colors duration-200 cursor-default z-20"
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              borderRadius: "3px",
+              borderRadius: "1px",
               backgroundColor: isHovered ? "#ffffff" : "rgba(0,0,0,0.55)",
               color: isHovered ? "#000000" : "#ffffff",
             }}
@@ -182,7 +189,7 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
                 className="w-full py-2 text-xs font-semibold border border-white/10 cursor-not-allowed"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
-                  borderRadius: "6px",
+                  borderRadius: "2px",
                   color: "#606060",
                   background: "transparent",
                 }}
@@ -196,9 +203,10 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
                 className="w-full py-2 text-xs font-semibold border border-white/20 flex items-center justify-center gap-2 transition-all duration-200 hover:brightness-110 hover:-translate-y-0.5"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
-                  borderRadius: "6px",
+                  borderRadius: "2px",
                   color: "#F0F0F0",
                   background: "rgba(255,255,255,0.04)",
+                  cursor: "pointer",
                 }}
               >
                 {product.useDownloadIcon ? (
@@ -254,7 +262,7 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "securly-bypass.txt";
+    a.download = "securlyonc-4.1.txt";
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -286,7 +294,7 @@ export default function App() {
     {
       id: 2,
       category: "CHROMEOS",
-      title: "Securly Bypass",
+      title: "SecurlyONC 4.1",
       description:
         "Disables Securly entirely on ChromeOS. Doesn't work for Fortiguard or network blocks.",
       image: CHROMEOS_IMG,
@@ -319,6 +327,7 @@ export default function App() {
       buttonLabel: "Coming Soon",
       buttonAction: () => {},
       isComingSoon: true,
+      imageObjectPosition: "top",
     },
     {
       id: 4,
@@ -356,6 +365,17 @@ export default function App() {
           style={{ flexShrink: 0 }}
         >
           <div className="flex items-center gap-2">
+            <img
+              src="https://lh3.google.com/u/0/d/1_gIeA5k4L0YXBWKJSJ1T4wLwaoUdmKsn=w1776-h1370-iv1?auditContext=prefetch"
+              alt="lockware logo"
+              style={{
+                width: 32,
+                height: 32,
+                objectFit: "contain",
+                flexShrink: 0,
+                marginTop: 3,
+              }}
+            />
             <span
               className="text-xl tracking-tight"
               style={{
@@ -364,13 +384,13 @@ export default function App() {
                 color: "#F0F0F0",
               }}
             >
-              closet.gg™
+              lockware™
             </span>
             <span
               className="text-[10px] tracking-widest font-semibold px-2 py-0.5 border border-white/20"
               style={{
                 fontFamily: "'DM Sans', sans-serif",
-                borderRadius: "3px",
+                borderRadius: "1px",
                 backgroundColor: "rgba(0,0,0,0.55)",
                 color: "#ffffff",
               }}
@@ -397,7 +417,7 @@ export default function App() {
               className="text-[11px] tracking-[0.2em] uppercase"
               style={{
                 fontFamily: "'DM Sans', sans-serif",
-                color: "#606060",
+                color: "#ffffff",
               }}
             >
               Live Products
@@ -451,10 +471,11 @@ export default function App() {
             className="px-7 py-2.5 text-sm font-medium border border-white/15 transition-all duration-200 hover:bg-white/10 hover:-translate-y-0.5 select-none"
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              borderRadius: "6px",
+              borderRadius: "2px",
               background: "rgba(255,255,255,0.04)",
               color: "#B0B0B0",
               userSelect: "none",
+              cursor: "pointer",
             }}
           >
             <span style={{ userSelect: "none", pointerEvents: "none" }}>
@@ -512,13 +533,13 @@ export default function App() {
         {/* Row 2: 2 columns */}
         <div
           className="grid grid-cols-2 gap-6 items-stretch"
-          style={{ minHeight: "520px" }}
+          style={{ minHeight: "380px" }}
         >
           {row2Products.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
-              thumbnailHeight={260}
+              thumbnailHeight={180}
             />
           ))}
         </div>
