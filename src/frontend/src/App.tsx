@@ -9,10 +9,10 @@ const ROBLOX_IMG =
 const ONE_BLOCK_IMG =
   "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/a9/90/b1/a990b146-f9cb-7136-dc81-fd70e7ea2dbe/36304c14-13d7-47d4-b016-6f3d3deb52d1_one-block-maps-minecraft-mcpe-screen2.jpg/626x290bb.webp";
 
-const LOCKWARE_LOGO =
+const LUCIDWARE_LOGO =
   "https://lh3.google.com/u/0/d/1_gIeA5k4L0YXBWKJSJ1T4wLwaoUdmKsn=w1776-h1370-iv1?auditContext=prefetch";
 
-const SECURLY_BYPASS_TEXT = `Method 1: lockware ONC v4.1.1 (Private method so it's safer and faster)
+const SECURLY_BYPASS_TEXT = `Method 1: lucidware ONC v4.1.1 (Private method so it's safer and faster)
 1. Go to the settings of the WiFi you're connected to.
 2. Scroll down until you see "Network." Click on the dropdown menu and click custom name servers.
 3. Fill in the following numbers in the respected order:
@@ -274,7 +274,7 @@ function openTextPage(content: string) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lockware™</title>
+  <title>lucidware™</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
@@ -336,16 +336,16 @@ function openTextPage(content: string) {
       line-height: 1.8;
       color: #ffffff;
       font-family: 'DM Sans', sans-serif;
-      text-align: left;
-      display: inline-block;
+      text-align: center;
+      display: block;
     }
   </style>
 </head>
 <body>
   <header>
     <div class="header-inner">
-      <img src="${LOCKWARE_LOGO}" alt="lockware logo" class="header-logo" />
-      <span class="header-title">lockware™</span>
+      <img src="${LUCIDWARE_LOGO}" alt="lucidware logo" class="header-logo" />
+      <span class="header-title">lucidware™</span>
       <span class="header-badge">BETA</span>
     </div>
   </header>
@@ -456,7 +456,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             <img
               src="https://lh3.google.com/u/0/d/1_gIeA5k4L0YXBWKJSJ1T4wLwaoUdmKsn=w1776-h1370-iv1?auditContext=prefetch"
-              alt="lockware logo"
+              alt="lucidware logo"
               style={{
                 width: 32,
                 height: 32,
@@ -473,7 +473,7 @@ export default function App() {
                 color: "#F0F0F0",
               }}
             >
-              lockware™
+              lucidware™
             </span>
             <span
               className="text-[10px] tracking-widest font-semibold px-2 py-0.5 border border-white/20"
