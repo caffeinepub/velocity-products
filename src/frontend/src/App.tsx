@@ -28,24 +28,31 @@ Method 2: KSF Secure DNS (Public and slower, but more stable)
 3. Enable Use secure DNS.
 4. Select With: Custom, then enter https://dns.nextdns.io/a4ea85.`;
 
-const ONE_BLOCK_INSTRUCTIONS = `1. Downloading a launcher
+const ONE_BLOCK_INSTRUCTIONS_TEXT = `1. Installing a launcher
 
-FOR MACOS
-Download this file: https://drive.google.com/uc?export=download&id=1_YJEI55TpoPyLtz-W122u4j7mZ2v99nt
-Unzip the file and open the .html inside.
-Scroll down and continue to the second section.
+OPTION 1: HTML File
 
-FOR CHROMEOS
-Use the latest supported version of SecurlyONC.
+Download this file:
+
+%%DOWNLOAD_BUTTON%%
+
+Drag the HTML file into your tabs.
+
+OPTION 2: Web Launcher
+
+Use a Securly ONC for ChromeOS or a guest profile inspected tab.
+
 Open WebMC Launcher and launch 1.12.2.
-Scroll down and continue to the second section.
 
 2. Joining the server
-Pick a unique username, go to multiplayer, and press direct connect.
-Enter the following ip: wss://mc.ricenetwork.xyz and press connect.
-Create a password and join the server. Once you are in, right click the compass in your hotbar.
-Press the One Block server, the grass block in the menu.
-If you are in the whitelist, you will be automatically teleported to the island.`;
+
+Pick a unique username you will remember, go to multiplayer, and press Add Server.
+
+For the name, pick anything. For the IP, enter wss://mc.ricenetwork.xyz and save it.
+
+Join the server and pick a password you will remember. (Recommended to use your username or something simple like 12341234)
+
+Once you're in the lobby, press the compass and click the grass block.`;
 
 interface Product {
   id: number;
@@ -262,14 +269,7 @@ function ProductCard({ product, thumbnailHeight = 180 }: CardProps) {
   );
 }
 
-function openTextPage(content: string) {
-  const newWin = window.open("", "_blank");
-  if (!newWin) return;
-  const escaped = content
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-  newWin.document.write(`<!DOCTYPE html>
+const PAGE_SHELL_OPEN = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -280,65 +280,23 @@ function openTextPage(content: string) {
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #0a0a0a;
-      color: #ffffff;
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-    }
-    header {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .header-inner {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .header-logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      flex-shrink: 0;
-      margin-top: 3px;
-    }
-    .header-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: -0.025em;
-      color: #F0F0F0;
-    }
-    .header-badge {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      font-weight: 600;
-      padding: 2px 8px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 1px;
-      background: rgba(0,0,0,0.55);
-      color: #ffffff;
-    }
-    .content {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 60px 24px 60px;
-      text-align: center;
-    }
-    .text-body {
-      white-space: pre-wrap;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #ffffff;
-      font-family: 'DM Sans', sans-serif;
-      text-align: center;
-      display: block;
-    }
+    body { background: #0a0a0a; color: #ffffff; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+    header { width: 100%; display: flex; align-items: center; justify-content: center; padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .header-inner { display: flex; align-items: center; gap: 8px; }
+    .header-logo { width: 32px; height: 32px; object-fit: contain; flex-shrink: 0; margin-top: 3px; }
+    .header-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.025em; color: #F0F0F0; }
+    .header-badge { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.2em; font-weight: 600; padding: 2px 8px; border: 1px solid rgba(255,255,255,0.2); border-radius: 1px; background: rgba(0,0,0,0.55); color: #ffffff; }
+    .content { max-width: 600px; margin: 0 auto; padding: 60px 24px 60px; text-align: center; }
+    .text-body { white-space: pre-wrap; font-size: 13px; line-height: 1.8; color: #ffffff; font-family: 'DM Sans', sans-serif; text-align: center; display: block; }
+    /* Rich markup styles */
+    .section-header { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; color: #F0F0F0; display: block; margin: 1.4em 0 0.5em; }
+    .bigger { font-size: 1.08em; display: inline; }
+    .badge-tag { display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.18em; font-weight: 600; padding: 1px 7px; border: 1px solid rgba(255,255,255,0.35); border-radius: 1px; background: #ffffff; color: #000000; vertical-align: middle; margin: 0 3px; }
+    .dl-btn { display: inline-flex; align-items: center; gap: 6px; margin: 8px 0; padding: 7px 16px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #F0F0F0; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.2); border-radius: 2px; cursor: pointer; text-decoration: none; transition: background 0.15s; }
+    .dl-btn:hover { background: rgba(255,255,255,0.1); }
+    .dl-btn svg { flex-shrink: 0; }
+    p.line { margin: 0; padding: 0; min-height: 1.8em; }
+    p.line.blank { min-height: 0.9em; }
   </style>
 </head>
 <body>
@@ -349,11 +307,41 @@ function openTextPage(content: string) {
       <span class="header-badge">BETA</span>
     </div>
   </header>
-  <div class="content">
-    <span class="text-body">${escaped}</span>
-  </div>
+  <div class="content">`;
+
+const PAGE_SHELL_CLOSE = `  </div>
 </body>
-</html>`);
+</html>`;
+
+function openTextPage(content: string) {
+  const newWin = window.open("", "_blank");
+  if (!newWin) return;
+  const escaped = content
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  newWin.document.write(
+    `${PAGE_SHELL_OPEN}<span class="text-body">${escaped}</span>${PAGE_SHELL_CLOSE}`,
+  );
+  newWin.document.close();
+}
+
+function openOneBlockPage() {
+  const newWin = window.open("", "_blank");
+  if (!newWin) return;
+
+  const DOWNLOAD_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+
+  // Split on the download button placeholder, escape each part, then reassemble
+  const parts = ONE_BLOCK_INSTRUCTIONS_TEXT.split("%%DOWNLOAD_BUTTON%%");
+  const escapePart = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const downloadBtn = `<a class="dl-btn" href="https://drive.google.com/uc?export=download&id=1KW_lkOp4uaL2EMOocJUVgGeY3DLKr9ln" download="lucidware-eagler.html">${DOWNLOAD_SVG}lucidware-eagler.html</a>`;
+
+  const html = `<span class="text-body">${escapePart(parts[0])}${downloadBtn}${escapePart(parts[1] ?? "")}</span>`;
+
+  newWin.document.write(`${PAGE_SHELL_OPEN}${html}${PAGE_SHELL_CLOSE}`);
   newWin.document.close();
 }
 
@@ -363,7 +351,7 @@ export default function App() {
   };
 
   const handleOneBlockDownload = () => {
-    openTextPage(ONE_BLOCK_INSTRUCTIONS);
+    openOneBlockPage();
   };
 
   // Row 1: Minecraft, ChromeOS, One Block World (3 cols)
@@ -387,9 +375,8 @@ export default function App() {
       description:
         "Disables Securly entirely on ChromeOS. Doesn't work for Fortiguard or network blocks.",
       image: CHROMEOS_IMG,
-      buttonLabel: "Download",
+      buttonLabel: "Open",
       buttonAction: handleSecurlyDownload,
-      useDownloadIcon: true,
     },
     {
       id: 3,
@@ -398,9 +385,8 @@ export default function App() {
       description:
         "Detailed instructions on how to join the private One Block world.",
       image: ONE_BLOCK_IMG,
-      buttonLabel: "Download",
+      buttonLabel: "Open",
       buttonAction: handleOneBlockDownload,
-      useDownloadIcon: true,
     },
   ];
 
