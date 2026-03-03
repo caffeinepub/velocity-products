@@ -373,7 +373,7 @@ function openEaglercraftPage() {
   <p class="option-title">Pixel Client (Recommended)</p>
 
   <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;margin-bottom:16px;">
-    ${dlBtn("Pixel Client.html", "https://drive.google.com/uc?export=download&id=1mOopu2xyiIthAV8Bw55VqGYZm3DVRs1u")}
+    ${dlBtn("Open in new tab", "https://aa-34aeaglecaflucid.edgeone.app/", OPEN_SVG)}
   </div>
 
   <p class="option-title">WebMC Launcher</p>
