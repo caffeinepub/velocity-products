@@ -373,7 +373,7 @@ function openEaglercraftPage() {
   <p class="option-title">Pixel Client (Recommended)</p>
 
   <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;margin-bottom:16px;">
-    ${dlBtn("Open in new tab", "https://aa-34aeaglecaflucid.edgeone.app/", OPEN_SVG)}
+    <button class="dl-btn" onclick="(function(){var w=window.open('about:blank','_blank','width='+screen.availWidth+',height='+screen.availHeight+',top=0,left=0');if(!w)return;var d=w.document;d.write('<!DOCTYPE html><html><head><meta charset=UTF-8><style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;overflow:hidden}iframe{width:100%;height:100%;border:none;display:block}</style></head><body><iframe src=\\'https://aa-34aeaglecaflucid.edgeone.app/\\'></iframe></body></html>');d.close();})()">${OPEN_SVG}Open in new window</button>
   </div>
 
   <p class="option-title">WebMC Launcher</p>
