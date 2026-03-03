@@ -28,32 +28,6 @@ Method 2: KSF Secure DNS (Public and slower, but more stable)
 3. Enable Use secure DNS.
 4. Select With: Custom, then enter https://dns.nextdns.io/a4ea85.`;
 
-const ONE_BLOCK_INSTRUCTIONS_TEXT = `1. Installing a launcher
-
-OPTION 1: HTML File
-
-Download this file:
-
-%%DOWNLOAD_BUTTON%%
-
-Drag the HTML file into your tabs.
-
-OPTION 2: Web Launcher
-
-Use a Securly ONC for ChromeOS or a guest profile inspected tab.
-
-Open WebMC Launcher and launch 1.12.2.
-
-2. Joining the server
-
-Pick a unique username you will remember, go to multiplayer, and press Add Server.
-
-For the name, pick anything. For the IP, enter wss://mc.ricenetwork.xyz and save it.
-
-Join the server and pick a password you will remember. (Recommended to use your username or something simple like 12341234)
-
-Once you're in the lobby, press the compass and click the grass block.`;
-
 interface Product {
   id: number;
   category: string;
@@ -326,22 +300,100 @@ function openTextPage(content: string) {
   newWin.document.close();
 }
 
+function buildPageHTML(bodyContent: string, extraStyles = ""): string {
+  const shellWithStyles = PAGE_SHELL_OPEN.replace(
+    "</style>",
+    `${extraStyles}</style>`,
+  );
+  return `${shellWithStyles}${bodyContent}${PAGE_SHELL_CLOSE}`;
+}
+
+const PAGE_EXTRA_STYLES = `
+  .section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 4vw, 2.5rem); color: #F0F0F0; margin: 1.4em 0 0.6em; line-height: 1.1; }
+  .option-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.95rem; color: #F0F0F0; margin: 1.2em 0 0.5em; }
+`;
+
+const DOWNLOAD_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const OPEN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+function dlBtn(label: string, href: string, icon = DOWNLOAD_SVG): string {
+  return `<a class="dl-btn" href="${href}" target="_blank" rel="noopener noreferrer">${icon}${label}</a>`;
+}
+
+const TEXTURE_PACK_BUTTONS = `
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:12px;">
+    ${dlBtn("[1.12.2]modern-textures", "https://drive.google.com/uc?export=download&id=1iFmipC2HtqHoE_xOLq7mqrYZ2SDNxzHz")}
+    ${dlBtn("teddy-totems.zip", "https://drive.google.com/uc?export=download&id=16u4zsHPHGXDUScFr11uFkxcPPQ9FQDYB")}
+    ${dlBtn("[1.12.2]faithful-32x", "https://drive.google.com/file/d/1A9tkwe5zZY6ZH_edICc_GzFlAHdTd6QJ/view?usp=sharing")}
+    ${dlBtn("Pixxli 128x", "https://drive.google.com/uc?export=download&id=1g23DnbKMvPQhdORJbAjY-OueN7ExLYCD")}
+  </div>`;
+
 function openOneBlockPage() {
   const newWin = window.open("", "_blank");
   if (!newWin) return;
 
-  const DOWNLOAD_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+  const html = `
+<div class="text-center" style="max-width:600px;margin:0 auto;">
 
-  // Split on the download button placeholder, escape each part, then reassemble
-  const parts = ONE_BLOCK_INSTRUCTIONS_TEXT.split("%%DOWNLOAD_BUTTON%%");
-  const escapePart = (s: string) =>
-    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  <p class="section-title">1. Installing a client</p>
 
-  const downloadBtn = `<a class="dl-btn" href="https://drive.google.com/uc?export=download&id=1KW_lkOp4uaL2EMOocJUVgGeY3DLKr9ln" download="lucidware-eagler.html">${DOWNLOAD_SVG}lucidware-eagler.html</a>`;
+  <p class="line">Go to <a href="javascript:void(0)" onclick="window.opener && window.opener.openEaglercraftPage ? window.opener.openEaglercraftPage() : null" style="color:#F0F0F0;text-decoration:underline;cursor:pointer;">Minecraft Clients</a> (OPTION 2: Web Launcher style).</p>
+  <p class="line">&nbsp;</p>
+  <p class="line">Choose a client and download/open it. If one doesn&rsquo;t work, try a different client.</p>
 
-  const html = `<span class="text-body">${escapePart(parts[0])}${downloadBtn}${escapePart(parts[1] ?? "")}</span>`;
+  <p class="section-title">2. Joining the server</p>
 
-  newWin.document.write(`${PAGE_SHELL_OPEN}${html}${PAGE_SHELL_CLOSE}`);
+  <p class="line">Pick a unique username you will remember, go to multiplayer, and press Add Server.</p>
+  <p class="line">&nbsp;</p>
+  <p class="line">For the name, pick anything. For the IP, enter wss://mc.ricenetwork.xyz and save it.</p>
+  <p class="line">&nbsp;</p>
+  <p class="line">Join the server and pick a password you will remember. (Recommended to use your username or something simple like 12341234)</p>
+  <p class="line">&nbsp;</p>
+  <p class="line">Once you&rsquo;re in the lobby, press the compass and click the grass block.</p>
+
+</div>`;
+
+  newWin.document.write(buildPageHTML(html, PAGE_EXTRA_STYLES));
+  newWin.document.close();
+}
+
+function openEaglercraftPage() {
+  const newWin = window.open("", "_blank");
+  if (!newWin) return;
+
+  const html = `
+<div class="text-center" style="max-width:600px;margin:0 auto;">
+
+  <p class="option-title">Eaglercraft Default Client</p>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;margin-bottom:16px;">
+    ${dlBtn("Eaglercraft Default.html", "https://drive.google.com/uc?export=download&id=1KW_lkOp4uaL2EMOocJUVgGeY3DLKr9ln")}
+  </div>
+
+  <p class="option-title">Pixel Client (Recommended)</p>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;margin-bottom:16px;">
+    ${dlBtn("Pixel Client.html", "https://drive.google.com/uc?export=download&id=1mOopu2xyiIthAV8Bw55VqGYZm3DVRs1u")}
+  </div>
+
+  <p class="option-title">WebMC Launcher</p>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;margin-bottom:16px;">
+    ${dlBtn("Open in new tab", "https://webmc.colbster937.dev/", OPEN_SVG)}
+  </div>
+
+  <p class="option-title">Tuff Client</p>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;margin-bottom:16px;">
+    ${dlBtn("Tuff Client.html", "https://drive.google.com/uc?export=download&id=12HxsGbU75gf2J09Ll9qZwzG3j5PDYikh")}
+  </div>
+
+  <p class="option-title">Texture Packs</p>
+  ${TEXTURE_PACK_BUTTONS}
+
+</div>`;
+
+  newWin.document.write(buildPageHTML(html, PAGE_EXTRA_STYLES));
   newWin.document.close();
 }
 
@@ -354,19 +406,22 @@ export default function App() {
     openOneBlockPage();
   };
 
+  const handleEaglercraftOpen = () => {
+    openEaglercraftPage();
+  };
+
   // Row 1: Minecraft, ChromeOS, One Block World (3 cols)
   // Row 2: Fortinet Bypass, Roblox (2 cols)
   const row1Products: Product[] = [
     {
       id: 1,
       category: "MINECRAFT",
-      title: "WebMC Launcher",
+      title: "Eaglercraft Clients",
       description:
-        "All versions of Eaglercraft with the Wisp modification in one launcher.",
+        "All different supported Eaglercraft 1.12.2 clients compiled into one page.",
       image: MINECRAFT_IMG,
       buttonLabel: "Open",
-      buttonAction: () =>
-        window.open("https://webmc.colbster937.dev/", "_blank"),
+      buttonAction: handleEaglercraftOpen,
     },
     {
       id: 2,
