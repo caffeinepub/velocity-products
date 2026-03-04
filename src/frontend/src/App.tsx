@@ -382,18 +382,40 @@ function openEaglercraftPage() {
     ${dlBtn("Open in new tab", "https://webmc.colbster937.dev/", OPEN_SVG)}
   </div>
 
-  <p class="option-title">Tuff Client</p>
-
-  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;margin-bottom:16px;">
-    ${dlBtn("Tuff Client.html", "https://drive.google.com/uc?export=download&id=12HxsGbU75gf2J09Ll9qZwzG3j5PDYikh")}
-  </div>
-
   <p class="option-title">Texture Packs</p>
   ${TEXTURE_PACK_BUTTONS}
 
 </div>`;
 
   newWin.document.write(buildPageHTML(html, PAGE_EXTRA_STYLES));
+  newWin.document.close();
+}
+
+function openUpdatesPage() {
+  const newWin = window.open("", "_blank");
+  if (!newWin) return;
+
+  const updatesHtml = `
+<div style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:28px;">
+
+  <div>
+    <span class="option-title">BETA 0.1.1</span>
+    <p class="line" style="margin-top:6px;">Removed Tuff Client and moved Texture Packs to Eaglercraft Clients.</p>
+  </div>
+
+  <div>
+    <span class="option-title">BETA 0.1.0</span>
+    <p class="line" style="margin-top:6px;">Removed WebMC Launcher, and replaced it with Eaglercraft Clients. Added Pixel Client and Tuff Client.</p>
+  </div>
+
+  <div>
+    <span class="option-title">BETA 0.0.3</span>
+    <p class="line" style="margin-top:6px;">Added a Texture Packs section.</p>
+  </div>
+
+</div>`;
+
+  newWin.document.write(buildPageHTML(updatesHtml, PAGE_EXTRA_STYLES));
   newWin.document.close();
 }
 
@@ -418,7 +440,7 @@ export default function App() {
       category: "MINECRAFT",
       title: "Eaglercraft Clients",
       description:
-        "All different supported Eaglercraft 1.12.2 clients compiled into one page.",
+        "A centralized collection of all supported Eaglercraft 1.12.2 client builds.",
       image: MINECRAFT_IMG,
       buttonLabel: "Open",
       buttonAction: handleEaglercraftOpen,
@@ -437,8 +459,7 @@ export default function App() {
       id: 3,
       category: "SERVER",
       title: "One Block World",
-      description:
-        "Detailed instructions on how to join the private One Block world.",
+      description: "Access guide for joining the One Block world.",
       image: ONE_BLOCK_IMG,
       buttonLabel: "Open",
       buttonAction: handleOneBlockDownload,
@@ -491,7 +512,7 @@ export default function App() {
       >
         {/* Header */}
         <header
-          className="w-full flex items-center justify-center py-6 border-b border-white/5"
+          className="w-full flex items-center justify-center py-6 border-b border-white/5 relative"
           style={{ flexShrink: 0 }}
         >
           <div className="flex items-center gap-2">
@@ -528,6 +549,53 @@ export default function App() {
               BETA
             </span>
           </div>
+          {/* Clipboard / Updates icon — right side */}
+          <button
+            type="button"
+            onClick={openUpdatesPage}
+            title="Updates"
+            style={{
+              position: "absolute",
+              right: "24px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              color: "#606060",
+              padding: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#F0F0F0";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "#606060";
+            }}
+            data-ocid="header.updates.button"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <title>Updates</title>
+              <rect x="9" y="2" width="6" height="4" rx="1" ry="1" />
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+              <line x1="12" y1="11" x2="12" y2="17" />
+              <line x1="9" y1="14" x2="15" y2="14" />
+            </svg>
+          </button>
         </header>
 
         {/* Hero Section — fills remaining viewport height */}
